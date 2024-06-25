@@ -1,31 +1,21 @@
-# Unity3d UI Grid Raw Image
-Custom graphic for uGUI. Single-object/texture Grid image, excelent for tile-based (tetris-like) inventory
+uGUI Custom Graphic that draws an oval sector
 
-[Youtube usage video](https://youtu.be/E7Ouh1k3No0?si=mEKckcfdjrP_Yf0Z)
-
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/inspector-preview.png)
-
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_1.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_2.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_3.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_4.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_5.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_6.png)
-![alt text](https://github.com/mitay-walle/com.mitay-walle.grid-raw-image/blob/main/.github~/Documentation/Screenshot_20.png)
-
-## Features:
-- 1 texture / 1 GameObject / 1 drawcall
-- skip cells
-- valid raycasting by geometry for input
-- resize rectTransform to fit
-- extrude edges (inner outer)
-- Non-rectangle cells
-- script-based, no custom shader
-
-## TODO
-- cell-outline mode
-- shape-outline mode
+# Features
+- no custom shaders
+- correct input handling
 - SpriteBorder support
-
-
-
+- 9-slice support
+- SpriteAtlas support
+- pixelPerUnitMultiplier support
+- Anchors for other transforms, including resizing to squeeze content into a sector
+- UV-by radius and tile by RectTransform
+- free pivot, or generated in the center of the sector
+- gradients
+- nested sectors can stick to parent
+- offset by angle
+- pixel offset
+- performance-wise
+# Known Issues
+- automatic navigation not always recognize Selectable in selection wheel
+- Tiled mode not support SpriteAtlas, only Single-texture sprites
+# Usage Example | 9-slice sprite

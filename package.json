@@ -1,0 +1,27 @@
+{
+  "name": "com.mitay-walle.ui-graphic-sector",
+  "version": "1.0.0",
+  "displayName": "UI Graphic Sector",
+  "description": "uGUI Custom Graphic that draws an oval sector\nFeatures\n-1 script\n-no custom shaders\n-correct input handling\n-SpriteBorder support\n-9-slice support\n-SpriteAtlas support\n-pixelPerUnitMultiplier support\n-Anchors for other transforms, including resizing to squeeze content into a sector\n-UV-by radius and tile by RectTransform\n-free pivot, or generated in the center of the sector\n-gradients\n-nested sectors can stick to parent\n-offset by angle\n-pixel offset\n-performance-wise\n-Known Issues\n-navigation not always recognize Selectable in selection wheel\n-Tiled mode not support SpriteAtlas, only Single-texture sprites",  
+  "unity": "2018.4",
+    "keywords": [
+    "UI",
+    "Graphic",
+	"Geometry"
+  ],
+	"documentationUrl": "https://github.com/mitay-walle/com.mitay-walle.grid-raw-image//blob/main/README.md",
+	"licensesUrl": "https://github.com/mitay-walle/com.mitay-walle.grid-raw-image//blob/main/LICENSE.md",
+  "author": {
+    "name": "mitay-walle",
+    "email": "mitay-walle91@mail.ru",
+    "url": "https://github.com/mitay-walle"
+  },
+  "samples": [
+    {
+      "displayName": "Usage Examples",
+      "description": "Contains scene with UI Graphic Sector",
+      "path": "Samples~/Scenes"
+    }
+  ],
+  "author": "mitay-walle <mitay-walle91@mail.ru> (https://github.com/mitay-walle)"
+}

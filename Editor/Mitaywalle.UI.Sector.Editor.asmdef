@@ -1,0 +1,14 @@
+{
+    "name": "Mitaywalle.UI.Sector.Editor",
+    "rootNamespace": "Mitaywalle.UI.Sector",
+    "references": ["GUID:dc2e4e98e78df284194df1db48f98a2d","GUID:343deaaf83e0cee4ca978e7df0b80d21","GUID:2bafac87e7f4b9b418d9448d219b01ab"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

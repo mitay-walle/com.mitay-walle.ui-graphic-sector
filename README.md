@@ -1,4 +1,4 @@
-uGUI Custom Graphic that draws an oval sector
+Unity3d uGUI Custom Graphic that draws an oval sector
 
 # Features
 - no custom shaders

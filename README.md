@@ -16,8 +16,8 @@ Unity3d uGUI Custom Graphic that draws an oval sector
 - pixel offset
 - performance-wise
 # Known Issues
-- automatic navigation not always recognize Selectable in selection wheel
-- Tiled mode not support SpriteAtlas, only Single-texture sprites
+- automatic navigation not always recognize Selectable in selection wheel, cause it's RectTransforms placed identicaly
+- Tiled mode not support SpriteAtlas, only Single-texture sprites, by design. Cause tiling achievet through uv repeating, no blowing up geometry as UI.Image.Tiled use 
 # Usage Example | 9-slice sprite
 ![sector_resolution](https://github.com/mitay-walle/com.mitay-walle.ui-graphic-sector/assets/5578552/8e77b83f-3c27-49b0-aa49-00e3eb194d18)
 ![sector_pixelPerUnitMultiplier](https://github.com/mitay-walle/com.mitay-walle.ui-graphic-sector/assets/5578552/d77aa3e0-4341-44a3-99c5-f1af5514a5f8)

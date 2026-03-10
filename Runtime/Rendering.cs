@@ -221,6 +221,7 @@ namespace Mitaywalle.UI.Sector
 				angle2 = Cache.MaxAngle,
 				radius1 = Cache.InnerRadius,
 				radius2 = Cache.OuterRadius,
+				radialAngles = true,
 			};
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
@@ -239,6 +240,7 @@ namespace Mitaywalle.UI.Sector
 				angle2 = Cache.MaxAngle,
 				radius1 = Cache.InnerRadius,
 				radius2 = Cache.OuterRadius,
+				radialAngles = true,
 			};
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
@@ -286,6 +288,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MinAngle + Cache.DeltaAngle * spriteBorder.x;
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -299,6 +302,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MinAngle + Cache.DeltaAngle * spriteBorder.x;
 			values.radius1 = s_radius[0];
 			values.radius2 = s_radius[1];
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -312,6 +316,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MinAngle + Cache.DeltaAngle * spriteBorder.x;
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -325,6 +330,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -339,6 +345,7 @@ namespace Mitaywalle.UI.Sector
 				values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 				values.radius1 = s_radius[0];
 				values.radius2 = s_radius[1];
+				values.radialAngles = false;
 				values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 				RenderArc(ref values);
 			}
@@ -353,6 +360,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -366,6 +374,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle;
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -379,6 +388,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle;
 			values.radius1 = s_radius[0];
 			values.radius2 = s_radius[1];
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -392,6 +402,7 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle;
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
+			values.radialAngles = false;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 		}
@@ -409,26 +420,38 @@ namespace Mitaywalle.UI.Sector
 			uvMax.y = arc.uvMax.y;
 			q.uvSprite = new Vector4(uvMin.x, uvMin.y, uvMax.x, uvMax.y);
 
-			float angle1 = arc.angle1;
-			float angleDelta = (arc.angle2 - arc.angle1) / arc.segmentCount;
-			float angle2 = angle1 + angleDelta;
+			float outerAngle1 = arc.angle1;
+			float outerAngleDelta = (arc.angle2 - arc.angle1) / arc.segmentCount;
+			float outerAngle2 = outerAngle1 + outerAngleDelta;
 
 			float radius1X = arc.radius1 * rect.width / 2;
 			float radius1Y = arc.radius1 * rect.height / 2;
 			float radius2X = arc.radius2 * rect.width / 2;
 			float radius2Y = arc.radius2 * rect.height / 2;
-			q.leftBot = new Vector3(Math.Cos(angle1 * DEG2_RAD) * radius1X, Math.Sin(angle1 * DEG2_RAD) * radius1Y) + Cache.CircleCenter;
-			q.leftTop = new Vector3(Math.Cos(angle1 * DEG2_RAD) * radius2X, Math.Sin(angle1 * DEG2_RAD) * radius2Y) + Cache.CircleCenter;
-			q.rightTop = new Vector3(Math.Cos(angle2 * DEG2_RAD) * radius2X, Math.Sin(angle2 * DEG2_RAD) * radius2Y) + Cache.CircleCenter;
-			q.rightBot = new Vector3(Math.Cos(angle2 * DEG2_RAD) * radius1X, Math.Sin(angle2 * DEG2_RAD) * radius1Y) + Cache.CircleCenter;
-			q.angles = new(angle1, angle2);
+			float scale = arc.radialAngles || arc.radius1 <= 0 ? 1f : arc.radius2 / arc.radius1;
+			float innerAngle1 = outerAngle1;
+			float innerAngle2 = outerAngle2;
+			q.angles = new(outerAngle1, outerAngle2);
 			q.radius = new(0, 1);
 			for (int i = 0; i < arc.segmentCount; i++)
 			{
-				q.leftBot.Set(Math.Cos(angle1 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(angle1 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
-				q.leftTop.Set(Math.Cos(angle1 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(angle1 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
-				q.rightTop.Set(Math.Cos(angle2 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(angle2 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
-				q.rightBot.Set(Math.Cos(angle2 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(angle2 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
+				if (scale != 1f)
+				{
+					float middle = (outerAngle1 + outerAngle2) * .5f;
+					float half = (outerAngle2 - outerAngle1) * .5f * scale;
+					innerAngle1 = middle - half;
+					innerAngle2 = middle + half;
+				}
+				else
+				{
+					innerAngle1 = outerAngle1;
+					innerAngle2 = outerAngle2;
+				}
+
+				q.leftBot.Set(Math.Cos(innerAngle1 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(innerAngle1 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
+				q.leftTop.Set(Math.Cos(outerAngle1 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(outerAngle1 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
+				q.rightTop.Set(Math.Cos(outerAngle2 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(outerAngle2 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
+				q.rightBot.Set(Math.Cos(innerAngle2 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(innerAngle2 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
 
 				if (Settings.LocalRescaleDelta != 0)
 				{
@@ -440,13 +463,13 @@ namespace Mitaywalle.UI.Sector
 
 				RenderQuad(ref arc, ref q);
 
-				angle1 += angleDelta;
-				angle2 += angleDelta;
+				outerAngle1 += outerAngleDelta;
+				outerAngle2 += outerAngleDelta;
 				q.uvSprite.x += arc.uvDelta.x;
 				q.uvSprite.z += arc.uvDelta.x;
 				q.uvGradient.x += arc.uvDeltaGradient;
 				q.uvGradient.y += arc.uvDeltaGradient;
-				q.angles.Set(angle1, angle2);
+				q.angles.Set(outerAngle1, outerAngle2);
 			}
 		}
 

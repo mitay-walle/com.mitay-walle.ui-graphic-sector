@@ -1,51 +1,68 @@
+using System.Runtime.InteropServices;
+using AOT;
 using Unity.Burst;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace Mitaywalle.UI.Sector
 {
-    [BurstCompile]
+    [BurstCompile(FloatMode = FloatMode.Fast, FloatPrecision = FloatPrecision.Low)]
     public static class BurstMath
     {
-        [BurstCompile]
-        public static float Sin(float x) // x in radians
-        {
-            // Normalize x to [-pi, pi]
-            while (x > 3.14159265f) x -= 6.28318531f;
-            while (x < -3.14159265f) x += 6.28318531f;
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void ComputePositionDelegate(
+            float angle,
+            float radiusX,
+            float radiusY,
+            float centerX,
+            float centerY,
+            float centerZ,
+            out float x,
+            out float y,
+            out float z);
 
-            float sinn;
-            if (x < 0)
-            {
-                sinn = 1.27323954f * x + 0.405284735f * x * x;
-                if (sinn < 0)
-                    sinn = 0.225f * (sinn * -sinn - sinn) + sinn;
-                else
-                    sinn = 0.225f * (sinn * sinn - sinn) + sinn;
-            }
-            else
-            {
-                sinn = 1.27323954f * x - 0.405284735f * x * x;
-                if (sinn < 0)
-                    sinn = 0.225f * (sinn * -sinn - sinn) + sinn;
-                else
-                    sinn = 0.225f * (sinn * sinn - sinn) + sinn;
-            }
-            return sinn;
+        private static readonly FunctionPointer<ComputePositionDelegate> ComputePositionPointer =
+            BurstCompiler.CompileFunctionPointer<ComputePositionDelegate>(ComputePositionInternal);
+
+        private static readonly ComputePositionDelegate ComputePositionCached = ComputePositionPointer.Invoke;
+
+        public static float Sin(float x) => math.sin(x);
+
+        public static float Cos(float x) => math.cos(x);
+
+        public static float3 ComputePosition(float angle, float radiusX, float radiusY, float3 center)
+        {
+            ComputePositionCached(
+                angle,
+                radiusX,
+                radiusY,
+                center.x,
+                center.y,
+                center.z,
+                out float x,
+                out float y,
+                out float z);
+
+            return new float3(x, y, z);
         }
 
-        [BurstCompile]
-        public static float Cos(float x) // x in radians
+        [BurstCompile(FloatMode = FloatMode.Fast, FloatPrecision = FloatPrecision.Low)]
+        [MonoPInvokeCallback(typeof(ComputePositionDelegate))]
+        private static void ComputePositionInternal(
+            float angle,
+            float radiusX,
+            float radiusY,
+            float centerX,
+            float centerY,
+            float centerZ,
+            out float x,
+            out float y,
+            out float z)
         {
-            return Sin(x + 1.5707963f);
-        }
+            math.sincos(angle, out float sin, out float cos);
 
-        [BurstCompile]
-        public static float3 ComputePosition(float angle, float radiusX, float radiusY, Vector2 center)
-        {
-            float cos = Cos(angle);
-            float sin = Sin(angle);
-            return new float3(cos * radiusX + center.x, sin * radiusY + center.y, 0);
+            x = cos * radiusX + centerX;
+            y = sin * radiusY + centerY;
+            z = centerZ;
         }
     }
 }

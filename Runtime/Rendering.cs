@@ -264,8 +264,8 @@ namespace Mitaywalle.UI.Sector
 
 			/// X=left, Y=bottom, Z=right, W=top | pixel-metric printed in Sprite Editor
 			spriteBorder = activeSprite.border;
-			float widthFactor = activeSprite.rect.width * multipliedPixelsPerUnit * Cache.DeltaAngleAbs / 360;
-			float heightFactor = activeSprite.rect.height * multipliedPixelsPerUnit * (Cache.OuterRadius - Cache.InnerRadius);
+			float widthFactor = activeSprite.rect.width;
+			float heightFactor = activeSprite.rect.height;
 			spriteBorder.x /= widthFactor;
 			spriteBorder.z /= widthFactor;
 			spriteBorder.y /= heightFactor;

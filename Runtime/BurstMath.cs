@@ -1,4 +1,5 @@
 using Unity.Burst;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mitaywalle.UI.Sector
@@ -40,11 +41,11 @@ namespace Mitaywalle.UI.Sector
         }
 
         [BurstCompile]
-        public static Vector3 ComputePosition(float angle, float radiusX, float radiusY, Vector2 center)
+        public static float3 ComputePosition(float angle, float radiusX, float radiusY, Vector2 center)
         {
             float cos = Cos(angle);
             float sin = Sin(angle);
-            return new Vector3(cos * radiusX + center.x, sin * radiusY + center.y, 0);
+            return new float3(cos * radiusX + center.x, sin * radiusY + center.y, 0);
         }
     }
 }

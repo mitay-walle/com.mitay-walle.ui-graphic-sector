@@ -516,9 +516,9 @@ namespace Mitaywalle.UI.Sector
 		{
 			if (!_sector || !_sector.isActiveAndEnabled)
 				return;
-#if UNITY_EDITOR
-			EditorUtility.SetDirty(_sector);
-#endif
+// #if UNITY_EDITOR
+// 			EditorUtility.SetDirty(_sector);
+// #endif
 			if (!CanvasUpdateRegistry.IsRebuildingGraphics())
 				_sector.SetVerticesDirty();
 

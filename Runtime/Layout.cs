@@ -144,9 +144,9 @@ namespace Mitaywalle.UI.Sector
 					rectTransform.pivot = pivot;
 				}
 
-				#if UNITY_EDITOR
-				EditorUtility.SetDirty(rectTransform);
-				#endif
+				// #if UNITY_EDITOR
+				// EditorUtility.SetDirty(rectTransform);
+				// #endif
 
 				_tracker.Add(_sector, rectTransform, flags);
 			}

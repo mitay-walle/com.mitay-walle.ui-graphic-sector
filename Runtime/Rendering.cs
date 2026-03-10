@@ -222,6 +222,7 @@ namespace Mitaywalle.UI.Sector
 				radius1 = Cache.InnerRadius,
 				radius2 = Cache.OuterRadius,
 				radialAngles = true,
+			innerAnchor = .5f,
 			};
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
@@ -241,6 +242,7 @@ namespace Mitaywalle.UI.Sector
 				radius1 = Cache.InnerRadius,
 				radius2 = Cache.OuterRadius,
 				radialAngles = true,
+			innerAnchor = .5f,
 			};
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
@@ -289,6 +291,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
 			values.radialAngles = false;
+			values.innerAnchor = 0f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -303,6 +306,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = s_radius[0];
 			values.radius2 = s_radius[1];
 			values.radialAngles = false;
+			values.innerAnchor = 0f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -317,6 +321,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
 			values.radialAngles = false;
+			values.innerAnchor = 0f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -330,7 +335,8 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
-			values.radialAngles = false;
+			values.radialAngles = true;
+			values.innerAnchor = .5f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -345,7 +351,8 @@ namespace Mitaywalle.UI.Sector
 				values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 				values.radius1 = s_radius[0];
 				values.radius2 = s_radius[1];
-				values.radialAngles = false;
+				values.radialAngles = true;
+				values.innerAnchor = .5f;
 				values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 				RenderArc(ref values);
 			}
@@ -360,7 +367,8 @@ namespace Mitaywalle.UI.Sector
 			values.angle2 = Cache.MaxAngle - Cache.DeltaAngle * spriteBorder.z;
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
-			values.radialAngles = false;
+			values.radialAngles = true;
+			values.innerAnchor = .5f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -375,6 +383,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = Cache.InnerRadius;
 			values.radius2 = s_radius[0];
 			values.radialAngles = false;
+			values.innerAnchor = 1f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -389,6 +398,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = s_radius[0];
 			values.radius2 = s_radius[1];
 			values.radialAngles = false;
+			values.innerAnchor = 1f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 
@@ -403,6 +413,7 @@ namespace Mitaywalle.UI.Sector
 			values.radius1 = s_radius[1];
 			values.radius2 = Cache.OuterRadius;
 			values.radialAngles = false;
+			values.innerAnchor = 1f;
 			values.uvDelta = (values.uvMax - values.uvMin) / values.segmentCount;
 			RenderArc(ref values);
 		}
@@ -433,22 +444,17 @@ namespace Mitaywalle.UI.Sector
 			float innerAngle2 = outerAngle2;
 			q.angles = new(outerAngle1, outerAngle2);
 			q.radius = new(0, 1);
+			float innerRange = (arc.angle2 - arc.angle1) * scale;
+			float innerStart = Mathf.LerpUnclamped(arc.angle1, arc.angle2 - innerRange, arc.innerAnchor);
+			float innerEnd = innerStart + innerRange;
 			for (int i = 0; i < arc.segmentCount; i++)
 			{
 				if (scale != 1f)
 				{
-					float span = (outerAngle2 - outerAngle1) * scale;
-					float t = (i + .5f) / arc.segmentCount;
-					if (t <= .5f)
-					{
-						innerAngle1 = outerAngle1;
-						innerAngle2 = outerAngle1 + span;
-					}
-					else
-					{
-						innerAngle2 = outerAngle2;
-						innerAngle1 = outerAngle2 - span;
-					}
+					float t1 = (float)i / arc.segmentCount;
+					float t2 = (float)(i + 1) / arc.segmentCount;
+					innerAngle1 = Mathf.LerpUnclamped(innerStart, innerEnd, t1);
+					innerAngle2 = Mathf.LerpUnclamped(innerStart, innerEnd, t2);
 				}
 				else
 				{

@@ -12,6 +12,7 @@ namespace Mitaywalle.UI.Sector
 		public float angle1;
 		public float angle2;
 		public bool radialAngles;
+		public float innerAnchor;
 		public float radius1;
 		public float radius2;
 		public int segmentCount;

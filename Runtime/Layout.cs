@@ -94,7 +94,7 @@ namespace Mitaywalle.UI.Sector
 
 				float radius = Mathf.LerpUnclamped(_sector.Cache.InnerRadius, _sector.Cache.OuterRadius, NormalizedAnchorAngleRadius.y) + OffsetAnchorAngleRadius.y;
 				float angle = (Mathf.LerpUnclamped(_sector.Cache.MinAngle, _sector.Cache.MaxAngle, NormalizedAnchorAngleRadius.x) + OffsetAnchorAngleRadius.x) * DEG2_RAD;
-				Vector2 position = new(Math.Cos(angle) * radius * _sector.Cache.TransformRect.width / 2, Math.Sin(angle) * radius * _sector.Cache.TransformRect.height / 2);
+				Vector2 position = new(BurstMath.Cos(angle) * radius * _sector.Cache.TransformRect.width / 2, BurstMath.Sin(angle) * radius * _sector.Cache.TransformRect.height / 2);
 				if (!float.IsNaN(position.x) && !float.IsNaN(position.y))
 				{
 					rectTransform.anchoredPosition = position;

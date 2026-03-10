@@ -106,14 +106,14 @@ namespace Mitaywalle.UI.Sector
 
 			Cache.DeltaAngleFinalAbs = Mathf.Abs(Cache.MaxAngle - Cache.MinAngle);
 
-			Vector3 vector = Cache.MiddleVector = new Vector2(Math.Cos(Cache.MiddleAngle * DEG2_RAD) * radiusX, Math.Sin(Cache.MiddleAngle * DEG2_RAD) * radiusY);
+			Vector3 vector = Cache.MiddleVector = new Vector2(BurstMath.Cos(Cache.MiddleAngle * DEG2_RAD) * radiusX, BurstMath.Sin(Cache.MiddleAngle * DEG2_RAD) * radiusY);
 			Cache.SectorCenter = Cache.CircleCenter + vector;
 
 			Cache.Matrix4x4 = Matrix4x4.TRS(default, Quaternion.identity, Vector3.one * (Cache.OuterRadius - Settings.LocalRescaleDelta));
 			Cache.Color = _sector.color;
 			Cache.Color32 = _sector.color;
-			Cache.StartVector = new Vector2(Math.Cos(Cache.MinAngle * DEG2_RAD) * radiusX, Math.Sin(Cache.MinAngle * DEG2_RAD) * radiusY);
-			Cache.EndVector = new Vector2(Math.Cos(Cache.MaxAngle * DEG2_RAD) * radiusX, Math.Sin(Cache.MaxAngle * DEG2_RAD) * radiusY);
+			Cache.StartVector = new Vector2(BurstMath.Cos(Cache.MinAngle * DEG2_RAD) * radiusX, BurstMath.Sin(Cache.MinAngle * DEG2_RAD) * radiusY);
+			Cache.EndVector = new Vector2(BurstMath.Cos(Cache.MaxAngle * DEG2_RAD) * radiusX, BurstMath.Sin(Cache.MaxAngle * DEG2_RAD) * radiusY);
 			hasGradients = Settings.Gradients.Length > 0;
 
 			Cache.RectMinSize = Mathf.Min(Cache.TransformRect.width, Cache.TransformRect.height);
@@ -417,18 +417,22 @@ namespace Mitaywalle.UI.Sector
 			float radius1Y = arc.radius1 * rect.height / 2;
 			float radius2X = arc.radius2 * rect.width / 2;
 			float radius2Y = arc.radius2 * rect.height / 2;
-			q.leftBot = new Vector3(Math.Cos(angle1 * DEG2_RAD) * radius1X, Math.Sin(angle1 * DEG2_RAD) * radius1Y) + Cache.CircleCenter;
-			q.leftTop = new Vector3(Math.Cos(angle1 * DEG2_RAD) * radius2X, Math.Sin(angle1 * DEG2_RAD) * radius2Y) + Cache.CircleCenter;
-			q.rightTop = new Vector3(Math.Cos(angle2 * DEG2_RAD) * radius2X, Math.Sin(angle2 * DEG2_RAD) * radius2Y) + Cache.CircleCenter;
-			q.rightBot = new Vector3(Math.Cos(angle2 * DEG2_RAD) * radius1X, Math.Sin(angle2 * DEG2_RAD) * radius1Y) + Cache.CircleCenter;
+			float angleRad1 = angle1 * DEG2_RAD;
+			float angleRad2 = angle2 * DEG2_RAD;
+			q.leftBot = BurstMath.ComputePosition(angleRad1, radius1X, radius1Y, Cache.CircleCenter);
+			q.leftTop = BurstMath.ComputePosition(angleRad1, radius2X, radius2Y, Cache.CircleCenter);
+			q.rightTop = BurstMath.ComputePosition(angleRad2, radius2X, radius2Y, Cache.CircleCenter);
+			q.rightBot = BurstMath.ComputePosition(angleRad2, radius1X, radius1Y, Cache.CircleCenter);
 			q.angles = new(angle1, angle2);
 			q.radius = new(0, 1);
 			for (int i = 0; i < arc.segmentCount; i++)
 			{
-				q.leftBot.Set(Math.Cos(angle1 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(angle1 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
-				q.leftTop.Set(Math.Cos(angle1 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(angle1 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
-				q.rightTop.Set(Math.Cos(angle2 * DEG2_RAD) * radius2X + Cache.CircleCenter.x, Math.Sin(angle2 * DEG2_RAD) * radius2Y + Cache.CircleCenter.y, 0);
-				q.rightBot.Set(Math.Cos(angle2 * DEG2_RAD) * radius1X + Cache.CircleCenter.x, Math.Sin(angle2 * DEG2_RAD) * radius1Y + Cache.CircleCenter.y, 0);
+				angleRad1 = angle1 * DEG2_RAD;
+				angleRad2 = angle2 * DEG2_RAD;
+				q.leftBot = BurstMath.ComputePosition(angleRad1, radius1X, radius1Y, Cache.CircleCenter);
+				q.leftTop = BurstMath.ComputePosition(angleRad1, radius2X, radius2Y, Cache.CircleCenter);
+				q.rightTop = BurstMath.ComputePosition(angleRad2, radius2X, radius2Y, Cache.CircleCenter);
+				q.rightBot = BurstMath.ComputePosition(angleRad2, radius1X, radius1Y, Cache.CircleCenter);
 
 				if (Settings.LocalRescaleDelta != 0)
 				{

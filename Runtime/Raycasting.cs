@@ -17,7 +17,7 @@ namespace Mitaywalle.UI.Sector
 			float outer = sector.Cache.OuterRadius;
 			float angle = Vector2.SignedAngle(Vector2.right, pointerVector);
 			Vector2 size = sector.Cache.TransformRect.size / 2;
-			Vector2 vector = new Vector2(Math.Cos(angle * Mathf.Deg2Rad), Math.Sin(angle * Mathf.Deg2Rad));
+			Vector2 vector = new Vector2(BurstMath.Cos(angle * Mathf.Deg2Rad), BurstMath.Sin(angle * Mathf.Deg2Rad));
 			Vector2 innerVector = vector * size * inner;
 			Vector2 outerVector = vector * size * outer;
 

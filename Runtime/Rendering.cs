@@ -437,10 +437,18 @@ namespace Mitaywalle.UI.Sector
 			{
 				if (scale != 1f)
 				{
+					float span = (outerAngle2 - outerAngle1) * scale;
 					float middle = (outerAngle1 + outerAngle2) * .5f;
-					float half = (outerAngle2 - outerAngle1) * .5f * scale;
-					innerAngle1 = middle - half;
-					innerAngle2 = middle + half;
+					if (middle <= Cache.MiddleAngle)
+					{
+						innerAngle1 = outerAngle1;
+						innerAngle2 = outerAngle1 + span;
+					}
+					else
+					{
+						innerAngle2 = outerAngle2;
+						innerAngle1 = outerAngle2 - span;
+					}
 				}
 				else
 				{

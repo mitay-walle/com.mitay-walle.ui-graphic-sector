@@ -264,8 +264,10 @@ namespace Mitaywalle.UI.Sector
 
 			/// X=left, Y=bottom, Z=right, W=top | pixel-metric printed in Sprite Editor
 			spriteBorder = activeSprite.border;
-			float widthFactor = Mathf.Max(activeSprite.rect.width * multipliedPixelsPerUnit * Mathf.Max(Cache.DeltaAngleFinalAbs / 360f, .001f), .001f);
-			float heightFactor = Mathf.Max(activeSprite.rect.height * multipliedPixelsPerUnit * Mathf.Max(Cache.OuterRadius - Cache.InnerRadius, .001f), .001f);
+			float arcLength = Mathf.Max(Cache.DeltaAngleFinalAbs * DEG2_RAD * Cache.HalfRadius * Cache.RectMinSize / 2f, .001f);
+			float ringThickness = Mathf.Max((Cache.OuterRadius - Cache.InnerRadius) * Cache.RectMinSize / 2f, .001f);
+			float widthFactor = Mathf.Max(arcLength / multipliedPixelsPerUnit, .001f);
+			float heightFactor = Mathf.Max(ringThickness / multipliedPixelsPerUnit, .001f);
 			spriteBorder.x /= widthFactor;
 			spriteBorder.z /= widthFactor;
 			spriteBorder.y /= heightFactor;

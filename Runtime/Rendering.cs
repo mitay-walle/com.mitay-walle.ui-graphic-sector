@@ -264,12 +264,26 @@ namespace Mitaywalle.UI.Sector
 
 			/// X=left, Y=bottom, Z=right, W=top | pixel-metric printed in Sprite Editor
 			spriteBorder = activeSprite.border;
-			float widthFactor = Mathf.Max(activeSprite.rect.width * multipliedPixelsPerUnit, .001f);
-			float heightFactor = Mathf.Max(activeSprite.rect.height * multipliedPixelsPerUnit, .001f);
+			float widthFactor = Mathf.Max(activeSprite.rect.width * multipliedPixelsPerUnit * Mathf.Max(Cache.DeltaAngleFinalAbs / 360f, .001f), .001f);
+			float heightFactor = Mathf.Max(activeSprite.rect.height * multipliedPixelsPerUnit * Mathf.Max(Cache.OuterRadius - Cache.InnerRadius, .001f), .001f);
 			spriteBorder.x /= widthFactor;
 			spriteBorder.z /= widthFactor;
 			spriteBorder.y /= heightFactor;
 			spriteBorder.w /= heightFactor;
+			float horizontal = spriteBorder.x + spriteBorder.z;
+			if (horizontal > 1f)
+			{
+				float scale = 1f / horizontal;
+				spriteBorder.x *= scale;
+				spriteBorder.z *= scale;
+			}
+			float vertical = spriteBorder.y + spriteBorder.w;
+			if (vertical > 1f)
+			{
+				float scale = 1f / vertical;
+				spriteBorder.y *= scale;
+				spriteBorder.w *= scale;
+			}
 
 			// sprite border applied per-quad, to simplify math
 			/// left,center horizontal, right 

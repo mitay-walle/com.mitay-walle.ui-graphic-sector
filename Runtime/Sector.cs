@@ -88,14 +88,16 @@ namespace Mitaywalle.UI.Sector
 				if (Settings.Sprite.activeSprite)
 					spritePixelsPerUnit = Settings.Sprite.activeSprite.pixelsPerUnit;
 
+				float referencePixelsPerUnit = 100;
 				if (canvas)
-					m_CachedReferencePixelsPerUnit = canvas.referencePixelsPerUnit;
+					referencePixelsPerUnit = canvas.referencePixelsPerUnit;
+				m_CachedReferencePixelsPerUnit = Mathf.Max(referencePixelsPerUnit, .001f);
 
 				return spritePixelsPerUnit / m_CachedReferencePixelsPerUnit;
 			}
 		}
 
-		public float multipliedPixelsPerUnit => pixelsPerUnit * Settings.PixelsPerUnitMultiplier;
+		public float multipliedPixelsPerUnit => Mathf.Max(pixelsPerUnit * Settings.PixelsPerUnitMultiplier, .001f);
 
 		protected Sector() => useLegacyMeshGeneration = false;
 

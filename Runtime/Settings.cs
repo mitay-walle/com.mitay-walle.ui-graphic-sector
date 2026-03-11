@@ -13,7 +13,6 @@ namespace Mitaywalle.UI.Sector
 		const string T4 = "Required for <b>LocalRescaleDelta</b>\nRecalculate pivot of this RectTransform, to fit in Sector center";
 		const string T5 = "Require and force <b>PivotToSector</b>!\nscales down or up Sector graphic, to it's local center. Create straight line Margin in abstract 'pixels' between neibhour Sectors with sibling Transforms";
 		const string T6 = "<b>Affects Performance!</b> % Percents % Geometry Resolution, how many quads-per-degree would be generated";
-		const string T7 = "Work only if <b>Type = Sliced</b> and Sprite has border in import settings\n% Percents % \n-- more radius border \n++ more degrees border";
 		const string T8 = "% Percents % from RectTransform.size";
 		const string T9 = "Work only if <b>Type = Sliced</b> or Tiled. Adjust Sprite scale";
 		const string TA = "Work only if <b>Type = Sliced<b>. Skip center vertices";
@@ -36,7 +35,6 @@ namespace Mitaywalle.UI.Sector
 
 		[Header("Other")]
 		[Tooltip(T6), Range(1, 100)] public float GeometryResolution = 20;
-		[Tooltip(T7), Range(-98f, 98f)] public float SpriteBorderBalance = 85;
 		[Tooltip(T8)] public float Radius1 = 50;
 		[Tooltip(T8)] public float Radius2 = 100;
 		[Tooltip(T9)] public float PixelsPerUnitMultiplier = 1;
